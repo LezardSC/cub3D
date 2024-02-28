@@ -6,7 +6,7 @@
 /*   By: tmalidi <tmalidi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 13:28:46 by tmalidi           #+#    #+#             */
-/*   Updated: 2024/02/26 20:08:50 by tmalidi          ###   ########.fr       */
+/*   Updated: 2024/02/27 21:31:33 by tmalidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,19 +34,57 @@ void draw_player_view(t_data *game_data)
     }
 }
 
+void making_map(t_data *gd)
+{
+    int side;
+    int height;
+
+    side = 720 / (gd->max_x + 1);
+    height = 480 / (gd->max_y  + 1);
+    while (side < 720)
+    {
+        draw_line_for_wall(gd,side,0,side,480,0xFF2D00);
+        side += 720 / (gd->max_x + 1);
+    }
+    while (height < 480)
+    {
+        draw_line_for_wall(gd,0,height,720,height,0xFF2D00);
+        height += 480 / (gd->max_y  + 1);
+    }
+}
+
+int collision(t_data *gd, int x, int y)
+{
+    float case_height;
+    float case_width;
+    int column_index;
+    int line_index;
+
+    case_width = 720 / gd->max_x;
+    case_height = 480 / gd->max_y;
+    column_index = (int)(x/case_width);
+    line_index = (int)(y/case_height);
+    if (gd->map[line_index][column_index] == '1')
+        return (0);
+    //printf("ligne = [%d] | colonne = [%d] [%d] [%d] \n", line_index,column_index,gd->max_x,gd->max_y);
+    return 1;
+}
+
 void ft_put_windows(t_data *game_data)
 {
     //initilisation des données
     game_data->angle = 1 * M_PI / 180.0;
     game_data->copy_angle = 1 * 90/3 * M_PI / 180.0;
     game_data->pos_x = 100;
-    game_data->pos_y = 0 + 100;
-    game_data->x2 = 200 + 100;
-    game_data->y2 = 0 + 100;
+    game_data->pos_y = 100;
+    game_data->x2 = game_data->pos_x + 720;
+    game_data->y2 = game_data->pos_y;
     
     //init de la fenetre
     game_data->mlx = mlx_init();
-    game_data->win2 = mlx_new_window(game_data->mlx,720,480,"Cube3D");
+    game_data->win2 = mlx_new_window(game_data->mlx,720,480,"Cube3Drs");
+    //game_data->win = mlx_new_window(game_data->mlx,720,480,"Cube3Dls");
+    making_map(game_data);
     game_data->gi = mlx_new_image(game_data->mlx,720,480);
     game_data->addr = mlx_get_data_addr(game_data->gi,&game_data->bpp,&game_data->sl,&game_data->endian);
     mlx_key_hook(game_data->win2, ft_key, game_data);

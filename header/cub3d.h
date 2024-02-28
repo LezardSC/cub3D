@@ -6,7 +6,7 @@
 /*   By: tmalidi <tmalidi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 13:47:44 by jrenault          #+#    #+#             */
-/*   Updated: 2024/02/02 17:25:18 by jrenault         ###   ########lyon.fr   */
+/*   Updated: 2024/02/27 21:05:40 by tmalidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -182,5 +182,8 @@ void draw_vertical_line(t_data *game_data, float dist, int ray);
 float other_draw_line(t_data *gd, int x1, int y1, int x2, int y2, int color);
 void draw_floor(t_data *gd);
 void put_pixel_to_image(t_data *gd, int x, int y, int color);
+float draw_line_for_wall(t_data *gd, int x1, int y1, int x2, int y2, int color);
+void making_map(t_data *gd);
+int collision(t_data *gd, int x, int y);
 
 #endif
